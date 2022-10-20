@@ -8,17 +8,37 @@ jobs:
      steps:
        -  name: Checkout
           uses: actions/checkout@master
+          
        -  name: Use Node 
           uses: actions/setup-node@v1
           with:
             node-version: 10.x
+            
        - name: Install
          run: npm install
+         
+       - name: DockerHub Login
+         uses: docker/login-action@v1.10.0
+         with:
+          username: ${{ secrets.DOCKERHUB_LOGIN }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
+
+       - name: Build Artefacts
+         uses: docker/build-push-action@v2.6.1
+         with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            dsobootcamp/api_conversao:${{ github.run_number }}
+            dsobootcamp/api_conversao:latest
+            
        - name: Generate JWT keys
          run: |
           ssh-keygen -t rsa -b 2048 -q -N '' -m PEM -f private.key
            rm private.key.pub
            openssl rsa -in private.key -pubout -outform PEM -out public.key
            chmod 644 public.key private.key
+           
        -  name: Build
           run: docker-compose up -d
