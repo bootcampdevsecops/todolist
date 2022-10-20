@@ -1,4 +1,4 @@
-name: teste-todolist
+name: todolist
 
 on: [push, pull_request]
 jobs:
