@@ -23,11 +23,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_LOGIN }}
           password: ${{ secrets.DOCKERHUB_PASS }}
 
+       - name: Build Artifact Back
+         uses: docker/build-push-action@v2.6.1
+         with:
+          context: .
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            dsobootcamp/api_conversao:${{ github.run_number }}
+            dsobootcamp/api_conversao:latest
+       
        - name: Build Artefacts
          uses: docker/build-push-action@v2.6.1
          with:
           context: .
-          file: ./Dockerfile
+          file: ./frontend/Dockerfile
           push: true
           tags: |
             dsobootcamp/api_conversao:${{ github.run_number }}
