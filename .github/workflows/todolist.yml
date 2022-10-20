@@ -30,8 +30,8 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: |
-            dsobootcamp/api_conversao:${{ github.run_number }}
-            dsobootcamp/api_conversao:latest
+            dsobootcamp/todolistback:${{ github.run_number }}
+            dsobootcamp/todolistback:latest
        
        - name: Build Artefacts
          uses: docker/build-push-action@v2.6.1
@@ -40,15 +40,5 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: |
-            dsobootcamp/api_conversao:${{ github.run_number }}
-            dsobootcamp/api_conversao:latest
-            
-       - name: Generate JWT keys
-         run: |
-          ssh-keygen -t rsa -b 2048 -q -N '' -m PEM -f private.key
-           rm private.key.pub
-           openssl rsa -in private.key -pubout -outform PEM -out public.key
-           chmod 644 public.key private.key
-           
-       -  name: Build
-          run: docker-compose up -d
+            dsobootcamp/todolistfront:${{ github.run_number }}
+            dsobootcamp/todolistfront:latest
